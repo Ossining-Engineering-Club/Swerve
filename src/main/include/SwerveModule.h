@@ -38,8 +38,9 @@ private:
 	void SetDrivePower(double power);
 	double CalculateError(double TargetAngle);
 public:
-	SwerveModule(int RotatorPort, int DrivePort, int EncoderPort1, int reverseDirection, double Offset);
+	SwerveModule(int RotatorPort, int DrivePort, int EncoderPort1, int reverseDirection, double Offset, int dircetion);
 	
+	double direction;
 	double drive;
 	double rotate;
 	double signum;

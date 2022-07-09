@@ -3,7 +3,7 @@
 
 #include <frc/smartdashboard/SmartDashboard.h>
 using namespace frc;
-SwerveModule::SwerveModule(int RotatorPort, int DrivePort, int EncoderPort1, int reverseDirection,double Offset):
+SwerveModule::SwerveModule(int RotatorPort, int DrivePort, int EncoderPort1, int reverseDirection, double Offset, int polarity):
 RotatorMotor(RotatorPort),
 DriveMotor(DrivePort),
 RotatorEncoder(EncoderPort1,360,Offset),
@@ -16,18 +16,32 @@ pidController(.4,0,.0001)
 	//Look over the range
     pidController.EnableContinuousInput(0,2*3.1415926535);
 	MotorIsForward = true;
-	
+	double direction = polarity;
 }
 //ANGLE RETURNED IN RADIANS!!!!!!!!!!!!!!!!
 double SwerveModule::GetCurrentPosition(){
 	double angle = RotatorEncoder.Get();
+	while(angle < 0){
+		angle+=360;
+	}	
+	while(angle > 360){
+		angle-=360;
+	}
+
 	if (angle == 0.0)
 		angle = 360.0;
 	return angle*(M_PI/180);
 }
 
 double SwerveModule::GetTurningEncoderPosition(){
-	return RotatorEncoder.Get();
+	double ang = RotatorEncoder.Get();
+	while(ang < 0){
+		ang+=360;
+	}	
+	while(ang > 360){
+		ang-=360;
+	}
+	return ang;
 }
 
 //Input to motor state
@@ -39,7 +53,7 @@ void SwerveModule::SetToVector(frc::SwerveModuleState& state){
 	}else{
 		DriveMotor.Set(driveOut);
 	}*/
-	DriveMotor.Set(driveOut);
+	DriveMotor.Set(driveOut * direction);
 	auto optimizedstate = state.Optimize(state,(SwerveModule::GetCurrentPosition()*1_rad));
 	
 	//auto rotOut = turningPID.Calculate(SwerveModule::GetCurrentPosition()*1_rad);

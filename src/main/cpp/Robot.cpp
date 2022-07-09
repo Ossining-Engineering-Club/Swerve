@@ -10,14 +10,14 @@
 
 
 Robot::Robot():
-  RFMod(7, 6, 1, -1,(RFZero)),
-	LFMod(5, 4, 0, -1,(LFZero)), 
-	RBMod(1, 0, 3, 1,(RBZero)),
-	LBMod(3, 2, 2, 1,(LBZero)),
+  RFMod(7, 6, 1, -1,(RFZero), 1),
+	LFMod(5, 4, 0, -1,(LFZero), 1), 
+	RBMod(1, 0, 3, 1,(RBZero), 1),
+	LBMod(3, 2, 2, 1,(LBZero), 1),
   gyro(),
   KinematicsAndOdometry(0_m,0_m,0_rad, (gyro.GetAngle()*1_rad))
   {
-    
+ 
     zeroState.angle = Rotation2d(2_rad*M_PI);
     zeroState.speed = 0_mps;
     
@@ -108,9 +108,10 @@ void Robot::TeleopPeriodic() {
   //dash->PutNumber("EncoderAngle",LBMod.GetTurningEncoderPosition());
   dash->PutNumber("LFPos",LFMod.GetTurningEncoderPosition());
   dash->PutNumber("LBPos",LBMod.GetTurningEncoderPosition());
-  dash->PutNumber("RBPos",RBMod.GetTurningEncoderPosition());
+
   dash->PutNumber("RFPos",RFMod.GetTurningEncoderPosition());
   dash->PutNumber("RFPower",RFMod.rotate);
+  frc::SmartDashboard::PutNumber("Gyro", RBMod.GetTurningEncoderPosition());
   //dash->PutNumber("angle",KinematicsAndOdometry.frontLeft.angle.Radians().value());
 LFMod.SetToVector(KinematicsAndOdometry.frontLeft);
   RFMod.SetToVector(KinematicsAndOdometry.frontRight);

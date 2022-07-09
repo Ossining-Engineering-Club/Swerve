@@ -12,7 +12,7 @@
 #include <frc/ADXRS450_Gyro.h>
 
 #include "Constants.h"
-
+#include <frc/AnalogPotentiometer.h>
 #include <frc/Joystick.h>
 #include <frc/smartdashboard/SmartDashboard.h>
 #include <frc/XboxController.h>
