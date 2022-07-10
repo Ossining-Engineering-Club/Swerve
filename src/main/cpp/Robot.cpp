@@ -10,10 +10,10 @@
 
 
 Robot::Robot():
-  RFMod(7, 6, 1, -1,(RFZero), 1),
-	LFMod(5, 4, 0, -1,(LFZero), 1), 
-	RBMod(1, 0, 3, 1,(RBZero), 1),
-	LBMod(3, 2, 2, 1,(LBZero), 1),
+  RFMod(7, 6, 1, 1,(RFZero)),
+	LFMod(5, 4, 0, -1,(LFZero)), 
+	RBMod(1, 0, 3, 1,(RBZero)),
+	LBMod(3, 2, 2, -1,(LBZero)),
   gyro(),
   KinematicsAndOdometry(0_m,0_m,0_rad, (gyro.GetAngle()*1_rad))
   {

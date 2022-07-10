@@ -3,11 +3,12 @@
 
 #include <frc/smartdashboard/SmartDashboard.h>
 using namespace frc;
-SwerveModule::SwerveModule(int RotatorPort, int DrivePort, int EncoderPort1, int reverseDirection, double Offset, int polarity):
+SwerveModule::SwerveModule(int RotatorPort, int DrivePort, int EncoderPort1, int reverseDirection, double Offset):
 RotatorMotor(RotatorPort),
 DriveMotor(DrivePort),
 RotatorEncoder(EncoderPort1,360,Offset),
 pidController(.4,0,.0001)
+
 {
 	
 	correction = 0.0;
@@ -16,7 +17,7 @@ pidController(.4,0,.0001)
 	//Look over the range
     pidController.EnableContinuousInput(0,2*3.1415926535);
 	MotorIsForward = true;
-	double direction = polarity;
+	
 }
 //ANGLE RETURNED IN RADIANS!!!!!!!!!!!!!!!!
 double SwerveModule::GetCurrentPosition(){
@@ -53,7 +54,7 @@ void SwerveModule::SetToVector(frc::SwerveModuleState& state){
 	}else{
 		DriveMotor.Set(driveOut);
 	}*/
-	DriveMotor.Set(driveOut * direction);
+	DriveMotor.Set(driveOut);
 	auto optimizedstate = state.Optimize(state,(SwerveModule::GetCurrentPosition()*1_rad));
 	
 	//auto rotOut = turningPID.Calculate(SwerveModule::GetCurrentPosition()*1_rad);

@@ -1,8 +1,8 @@
 #pragma once
 #define RFZero 210.6
-#define RBZero 34
+#define RBZero 215
 #define LFZero 28.3
-#define LBZero 304.2//was 122.2
+#define LBZero 312
 
 #define velocityConstant .1
 #define rotationConstant .1
