@@ -1,20 +1,21 @@
 #pragma once
+//offsets
 #define RFZero 210.6
 #define RBZero 215
 #define LFZero 28.3
 #define LBZero 312
+//Gear and module related stuff
+#define TurningMotorGearRatio 1/2 //find out
+#define DrivingMotorGearRatio 1/2 //find out
+#define WheelDiameterInMeters .123 //find out
+#define DriveEncoderPosFactor (DrivingMotorGearRatio * M_PI * WheelDiameterInMeters)
+#define DriveEncoderVelocityFactor (DriveEncoderPosFactor / 60)
+#define turnEncoderPosFactor (TurningMotorGearRatio * M_PI * 2)
+#define turnEncoderVelocityFactor (turnEncoderPosFactor / 60)
 
-#define velocityConstant .1
-#define rotationConstant .1
 #define MAXSPEED 1
 #define MAXOmega 1
-#define MAXVOLTAGE 11.5
-#define MaxOmegaPerWheel 1
-#define MaxAlphaPerWheel 1
-//PID
-#define KP 0.00 //use -0.015
-#define KI 0.01
-#define KD 0.0
+
 //PID for Drive
 #define KDp 0
 #define KDi 0
