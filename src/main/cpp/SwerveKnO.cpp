@@ -37,21 +37,7 @@ void SwerveKnO::FieldRelativeKinematics(units::velocity::meters_per_second_t xsp
     frontRight = fr;
     backLeft = bl;
     backRight = br;
-    
 
-    /*Updates global matrix NOTE: fix later and make more elegant*/
-    //Front Left
-    motorDataMatrix[0][0] = frontLeft.speed.value();
-    motorDataMatrix[0][1] = frontLeft.angle.Radians().value();
-    //Front Right
-    motorDataMatrix[1][0] = frontRight.speed.value();
-    motorDataMatrix[1][1] = frontRight.angle.Radians().value();
-    //Back Left
-    motorDataMatrix[2][0] = backLeft.speed.value();
-    motorDataMatrix[2][1] = backLeft.angle.Radians().value();
-    //Back Right
-    motorDataMatrix[3][0] = backRight.speed.value();
-    motorDataMatrix[3][1] = backRight.angle.Radians().value();
 }
 void SwerveKnO::notFieldRelativeKinematics(units::meters_per_second_t  xspeed, units::meters_per_second_t  yspeed, 
                                            units::radians_per_second_t angularVelocity)
@@ -64,25 +50,13 @@ void SwerveKnO::notFieldRelativeKinematics(units::meters_per_second_t  xspeed, u
     auto states = kinematics.ToSwerveModuleStates(speeds);
     auto [fl, fr, bl, br] = states;
     //referance t the address array
-     kinematics.DesaturateWheelSpeeds(&states,(MAXSPEED*1_mps));
+    kinematics.DesaturateWheelSpeeds(&states,(MAXSPEED*1_mps));
 
     frontLeft = fl;
     frontRight = fr;
     backLeft = bl;
     backRight = br;
     /*Updates global matrix NOTE: fix later and make more elegant*/
-    //Front Left
-    motorDataMatrix[0][0] = frontLeft.speed.value();
-    motorDataMatrix[0][1] = frontLeft.angle.Radians().value();
-    //Front Right
-    motorDataMatrix[1][0] = frontRight.speed.value();
-    motorDataMatrix[1][1] = frontRight.angle.Radians().value();
-    //Back Left
-    motorDataMatrix[2][0] = backLeft.speed.value();
-    motorDataMatrix[2][1] = backLeft.angle.Radians().value();
-    //Back Right
-    motorDataMatrix[3][0] = backRight.speed.value();
-    motorDataMatrix[3][1] = backRight.angle.Radians().value();
 }
 void SwerveKnO::SwerveOdometryGetPose(units::angle::radian_t gyroAngle)
 {

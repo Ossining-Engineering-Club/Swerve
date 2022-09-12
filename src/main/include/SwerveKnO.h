@@ -29,7 +29,7 @@ class SwerveKnO{
     SwerveModuleState backLeft;
     SwerveModuleState backRight;
     //Rows consist of motor data columns consist of motor unins ROWS: Meters per second, degrees
-    double motorDataMatrix[4][2];
+    
     //Vector for pose note that it is x, y, and rotation in degrees
     double PoseVector[3];
     

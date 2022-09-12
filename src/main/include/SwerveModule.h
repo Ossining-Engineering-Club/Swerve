@@ -3,7 +3,7 @@
 #include <frc/Encoder.h>
 #include <frc/motorcontrol/Spark.h>
 #include <frc/CounterBase.h>
-#include "PID.h"
+
 #include <frc/kinematics/SwerveDriveOdometry.h>
 #include <frc/kinematics/SwerveDriveKinematics.h>
 #include <frc/geometry/Rotation2d.h>
@@ -20,6 +20,11 @@
 #include <frc/controller/SimpleMotorFeedforward.h>
 #include <units/angular_velocity.h>
 #include "Constants.h"
+//Motors and Encoders
+#include "rev/CANSparkMax.h"
+#include <frc/Encoder.h>
+#include <Rev/CANEncoder.h>
+
 #include <frc/AnalogPotentiometer.h>
 #include <frc/AnalogInput.h>
 #include <frc/controller/PIDController.h>
@@ -28,34 +33,26 @@
 using namespace frc;
 class SwerveModule{
 private:
-	Spark RotatorMotor;
-	Spark DriveMotor;
-	AnalogPotentiometer RotatorEncoder;
-	//AnalogInput analogIn;
-	PIDController pidController;
-	bool MotorIsForward;
-	double correction;
-	void SetDrivePower(double power);
-	double CalculateError(double TargetAngle);
+	rev::CANSparkMax RotatorMotor;
+	rev::CANSparkMax DriveMotor;
+
+	AnalogInput absEncoder;
+	PIDController turningPidController;
+	
+	
+	rev::SparkMaxRelativeEncoder * driveEncoder;
+	rev::SparkMaxRelativeEncoder * turningEncoder;
+
 public:
-	SwerveModule(int RotatorPort, int DrivePort, int EncoderPort1, int reverseDirection, double Offset);
+	SwerveModule(int RotatorMotorNo, int DriveMotorNo, int EncoderPort1, bool reverseDirection, double Offset, bool DriveReverse, bool TurnReverse);
 	
-	
-	double drive;
-	double rotate;
-	double signum;
-	double setpointvelocity;
+	//abs encoder vals
+	double absSignum;
+	double encoderOffset;
+
 	void ResetEncoder();
 	double GetCurrentPosition();
-	double GetTurningEncoderPosition();
-	double GetPEIDCorrection();
+	double GetAbsEncoderPosition();
 	void SetToVector(frc::SwerveModuleState& state);
-	//Using Provided PID controllers take note to change later
-  	//frc2::PIDController DrivePID{KDp,KDi,KDd};
-	//frc::ProfiledPIDController<units::radians> turningPID{KRp,KRi,KRd,
-	 // 													{MaxOmegaPerWheel*1_rad_per_s,MaxAlphaPerWheel*1_rad_per_s/1_s}};
 	
-	//FeedForward fix values
-	frc::SimpleMotorFeedforward<units::meters> driveFF{1_V,3_V/1_mps};
-	frc::SimpleMotorFeedforward<units::radians> rotatorFeedForward{1_V,.5_V/1_rad_per_s};
 };

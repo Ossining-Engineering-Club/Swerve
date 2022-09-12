@@ -10,17 +10,13 @@
 
 
 Robot::Robot():
-  RFMod(7, 6, 1, 1,(RFZero)),
-	LFMod(5, 4, 0, -1,(LFZero)), 
-	RBMod(1, 0, 3, 1,(RBZero)),
-	LBMod(3, 2, 2, -1,(LBZero)),
+  RFMod(7, 6, 1, false,(RFZero),false,false),
+	LFMod(5, 4, 0, false,(LFZero),false,false), 
+	RBMod(1, 0, 3, false,(RBZero),false,false),
+	LBMod(3, 2, 2, false,(LBZero),false,false),
   gyro(),
   KinematicsAndOdometry(0_m,0_m,0_rad, (gyro.GetAngle()*1_rad))
-  {
- 
-    zeroState.angle = Rotation2d(2_rad*M_PI);
-    zeroState.speed = 0_mps;
-    
+  { 
     dash -> init();
   }
 
@@ -76,9 +72,6 @@ void Robot::TeleopInit() {
   gyro.Reset();
   FieldOriented = false;
   throttle = 1;
- 
-  
-  
 }
 
 void Robot::TeleopPeriodic() {
@@ -91,7 +84,7 @@ void Robot::TeleopPeriodic() {
   KinematicsAndOdometry.SwerveOdometryGetPose(gyro.GetAngle()*1_rad);
   if(FieldOriented){
   KinematicsAndOdometry.FieldRelativeKinematics((xSpeed*1_mps),(ySpeed*1_mps),
-                                               (rotSpeed*1_rad_per_s),(gyro.GetAngle()*1_rad));
+                                               (rotSpeed*1_rad_per_s),(gyro.GetAngle()*(M_PI/180)*1_rad));
   }else{
   //KinematicsAndOdometry.notFieldRelativeKinematics((10_mps),(10_mps),(4_rad_per_s));
   KinematicsAndOdometry.notFieldRelativeKinematics((xSpeed*1_mps),(ySpeed*1_mps),(rotSpeed*1_rad_per_s));
@@ -106,14 +99,13 @@ void Robot::TeleopPeriodic() {
    //dash->PutNumber("XVal",xSpeed);
    //dash->PutNumber("YVal",ySpeed);
   //dash->PutNumber("EncoderAngle",LBMod.GetTurningEncoderPosition());
-  dash->PutNumber("LFPos",LFMod.GetTurningEncoderPosition());
-  dash->PutNumber("LBPos",LBMod.GetTurningEncoderPosition());
-
-  dash->PutNumber("RFPos",RFMod.GetTurningEncoderPosition());
-  dash->PutNumber("RFPower",RFMod.rotate);
-  frc::SmartDashboard::PutNumber("Gyro", RBMod.GetTurningEncoderPosition());
+  dash->PutNumber("LFPos",LFMod.GetCurrentPosition());
+  dash->PutNumber("LBPos",LBMod.GetCurrentPosition());
+  dash->PutNumber("RFPos",RFMod.GetCurrentPosition());
+  dash->PutNumber("RBPos",RBMod.GetCurrentPosition());
+  frc::SmartDashboard::PutNumber("Gyro", gyro.GetAngle()*(M_PI/180));
   //dash->PutNumber("angle",KinematicsAndOdometry.frontLeft.angle.Radians().value());
-LFMod.SetToVector(KinematicsAndOdometry.frontLeft);
+  LFMod.SetToVector(KinematicsAndOdometry.frontLeft);
   RFMod.SetToVector(KinematicsAndOdometry.frontRight);
   LBMod.SetToVector(KinematicsAndOdometry.backLeft);
   RBMod.SetToVector(KinematicsAndOdometry.backRight);
