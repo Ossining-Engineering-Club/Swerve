@@ -29,22 +29,23 @@
 #include <frc/AnalogInput.h>
 #include <frc/controller/PIDController.h>
 #include <bits/stdc++.h>
+#include <ctre/phoenix/sensors/CANCoder.h>
 
 using namespace frc;
 class SwerveModule{
 private:
 	rev::CANSparkMax RotatorMotor;
 	rev::CANSparkMax DriveMotor;
-
-	AnalogInput absEncoder;
-	PIDController turningPidController;
-	
-	
+	ctre::phoenix::sensors::CANCoder absEncoder;
 	rev::SparkMaxRelativeEncoder * driveEncoder;
 	rev::SparkMaxRelativeEncoder * turningEncoder;
 
+	
+	PIDController turningPidController;
+	
+	
 public:
-	SwerveModule(int RotatorMotorNo, int DriveMotorNo, int EncoderPort1, bool reverseDirection, double Offset, bool DriveReverse, bool TurnReverse);
+	SwerveModule(int RotatorMotorNo, int DriveMotorNo, int CANCoderId, bool reverseDirection, double Offset, bool DriveReverse, bool TurnReverse);
 	
 	//abs encoder vals
 	double absSignum;

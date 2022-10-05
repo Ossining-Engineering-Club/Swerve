@@ -2,13 +2,14 @@
 #include <fmt/core.h>
 #include <cmath>
 
+
 #include <frc/smartdashboard/SmartDashboard.h>
 using namespace frc;
-SwerveModule::SwerveModule(int RotatorMotorNo, int DriveMotorNo, int EncoderPort1, bool reverseDirection, double Offset, bool DriveReverse,
+SwerveModule::SwerveModule(int RotatorMotorNo, int DriveMotorNo, int CANCoderId, bool reverseDirection, double Offset, bool DriveReverse,
 						   bool TurnReverse):
 RotatorMotor(RotatorMotorNo,rev::CANSparkMax::MotorType::kBrushless),
 DriveMotor(DriveMotorNo, rev::CANSparkMax::MotorType::kBrushless),
-absEncoder(EncoderPort1),
+absEncoder(CANCoderId),
 turningPidController(KRp,KRi,KRd)
 {
 	encoderOffset = Offset;
@@ -38,7 +39,7 @@ double SwerveModule::GetCurrentPosition(){
 }
 //Radians
 double SwerveModule::GetAbsEncoderPosition(){
-	double ang = absEncoder.GetVoltage() / 5; //check this
+	double ang = absEncoder.GetPosition(); //check this
 	ang *= 2*M_PI; //precentage of a full rotation
 	ang -= encoderOffset;//accounts for offset
 	return ang * absSignum;
