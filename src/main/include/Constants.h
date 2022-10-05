@@ -5,16 +5,17 @@
 #define LFZero 28.3
 #define LBZero 312
 //Gear and module related stuff
-#define TurningMotorGearRatio 1/2 //find out
-#define DrivingMotorGearRatio 1/2 //find out
-#define WheelDiameterInMeters .123 //find out
+#define TurningMotorGearRatio 1/(150/7) //find out
+#define DrivingMotorGearRatio 1/6.75 //find out
+#define WheelDiameterInMeters 0.1016 //find out
 #define DriveEncoderPosFactor (DrivingMotorGearRatio * M_PI * WheelDiameterInMeters)
 #define DriveEncoderVelocityFactor (DriveEncoderPosFactor / 60)
 #define turnEncoderPosFactor (TurningMotorGearRatio * M_PI * 2)
 #define turnEncoderVelocityFactor (turnEncoderPosFactor / 60)
 
-#define MAXSPEED 1
-#define MAXOmega 1
+#define MAXMotorSPEED 4.4196 //in meters per second converted from ft/s
+#define MAXTotalSPEED 4.4196/4 
+#define MAXOmega 4//Calculate after taking dimensions
 
 //PID for Drive
 #define KDp 0

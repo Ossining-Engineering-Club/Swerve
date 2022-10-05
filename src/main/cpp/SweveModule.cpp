@@ -53,7 +53,7 @@ void SwerveModule::SetToVector(frc::SwerveModuleState& state){
 	//stops automatic recentering
 	if(std::abs(state.speed.value()) > 0.001){
 		auto optimizedstate = state.Optimize(state,(SwerveModule::GetCurrentPosition()*1_rad));
-		DriveMotor.Set(state.speed*(1/(MAXSPEED*1_mps)));
+		DriveMotor.Set(state.speed*(1/(MAXMotorSPEED*1_mps)));
 		RotatorMotor.Set(turningPidController.Calculate(SwerveModule::GetCurrentPosition(),optimizedstate.angle.Radians().value()));
 	}
 	else{
