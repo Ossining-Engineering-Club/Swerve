@@ -50,7 +50,7 @@ void SwerveKnO::notFieldRelativeKinematics(units::meters_per_second_t  xspeed, u
     auto states = kinematics.ToSwerveModuleStates(speeds);
     auto [fl, fr, bl, br] = states;
     //referance t the address array
-    kinematics.DesaturateWheelSpeeds(&states,(MAXSPEED*1_mps));
+    kinematics.DesaturateWheelSpeeds(&states,(MAXMotorSPEED*1_mps));
 
     frontLeft = fl;
     frontRight = fr;
