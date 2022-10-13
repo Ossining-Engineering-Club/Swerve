@@ -1,0 +1,23 @@
+Front Right:
+
+CANCoder: 9
+Turning motor: 2
+Drive motor: 1
+
+Front Left:
+
+CANCoder: 10
+Turning motor: 4
+Drive motor: 3
+
+Back Right:
+
+CANCoder: 11
+Turning motor: 6
+Drive motor: 5
+
+Back Left:
+
+CANCoder: 12
+Turning motor: 8
+Drive motor: 7
