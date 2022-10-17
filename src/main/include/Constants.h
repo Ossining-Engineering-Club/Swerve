@@ -10,7 +10,7 @@
 #define WheelDiameterInMeters 0.1016 //find out
 #define DriveEncoderPosFactor (DrivingMotorGearRatio * M_PI * WheelDiameterInMeters)
 #define DriveEncoderVelocityFactor (DriveEncoderPosFactor / 60)
-#define turnEncoderPosFactor (TurningMotorGearRatio * M_PI * 2)
+#define turnEncoderPosFactor (TurningMotorGearRatio * M_PI *2)
 #define turnEncoderVelocityFactor (turnEncoderPosFactor / 60)
 
 #define MAXMotorSPEED 4.4196 //in meters per second converted from ft/s

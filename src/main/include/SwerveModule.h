@@ -1,5 +1,5 @@
 #pragma once
-
+#include <frc/smartdashboard/SmartDashboard.h>
 #include <frc/Encoder.h>
 #include <frc/motorcontrol/Spark.h>
 #include <frc/CounterBase.h>
@@ -39,7 +39,7 @@ private:
 	ctre::phoenix::sensors::CANCoder absEncoder;
 	rev::SparkMaxRelativeEncoder * driveEncoder;
 	rev::SparkMaxRelativeEncoder * turningEncoder;
-
+	  SmartDashboard* dash;
 	
 	PIDController turningPidController;
 	
@@ -50,7 +50,8 @@ public:
 	//abs encoder vals
 	double absSignum;
 	double encoderOffset;
-
+	double GetDrivePower(frc::SwerveModuleState& state);
+	double GetRotatorPower(frc::SwerveModuleState& state);
 	void ResetEncoder();
 	double GetCurrentPosition();
 	double GetAbsEncoderPosition();
