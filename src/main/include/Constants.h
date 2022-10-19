@@ -5,7 +5,7 @@
 #define LFZero 0.771592
 #define LBZero 5.220137
 //Gear and module related stuff
-#define TurningMotorGearRatio 1/(150/7) //find out
+#define TurningMotorGearRatio 7.0/150.0 //find out
 #define DrivingMotorGearRatio 1/6.75 //find out
 #define WheelDiameterInMeters 0.1016 //find out
 #define DriveEncoderPosFactor (DrivingMotorGearRatio * M_PI * WheelDiameterInMeters)

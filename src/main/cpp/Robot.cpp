@@ -72,22 +72,26 @@ void Robot::TeleopInit() {
   gyro.Reset();
   FieldOriented = true;
   throttle = 1;
+  LFMod.ResetEncoder();
+  LBMod.ResetEncoder();
+  RFMod.ResetEncoder();
+  RBMod.ResetEncoder();
 }
 
 void Robot::TeleopPeriodic() {
   //Apperently Xbox inputs or reversed compared to joystick
   //Note Deadband in Xbox controller
-  const auto xSpeed = -xspeedLimiter.Calculate(frc::ApplyDeadband(stick1.GetX(),0.2)*MAXMotorSPEED);
+  const auto xSpeed = xspeedLimiter.Calculate(frc::ApplyDeadband(stick1.GetX(),0.2)*MAXMotorSPEED);
   const auto ySpeed = yspeedLimiter.Calculate(frc::ApplyDeadband(stick1.GetY(),0.2)*MAXMotorSPEED);
-  const auto rotSpeed = -rotspeedLimiter.Calculate(frc::ApplyDeadband(stick2.GetX(),0.2)*MAXOmega);
+  const auto rotSpeed = rotspeedLimiter.Calculate(frc::ApplyDeadband(stick2.GetX(),0.2)*MAXOmega);
   
   //KinematicsAndOdometry.SwerveOdometryGetPose(gyro.GetAngle()*1_rad);
   if(FieldOriented){
   KinematicsAndOdometry.FieldRelativeKinematics((xSpeed*1_mps),(ySpeed*1_mps),
-                                               (rotSpeed*1_rad_per_s),(gyro.GetAngle()*(M_PI/180)*1_rad));
+                                               (rotSpeed*1_rad_per_s),((gyro.GetAngle()-90)*(M_PI/180)*1_rad));
   }else{
   //KinematicsAndOdometry.notFieldRelativeKinematics((10_mps),(10_mps),(4_rad_per_s));
-  KinematicsAndOdometry.notFieldRelativeKinematics((1_mps),(1_mps),(0_rad_per_s));
+  KinematicsAndOdometry.notFieldRelativeKinematics((0.5_mps),(0.5_mps),(0_rad_per_s));
   }
   //dash->PutNumber("Desired LF",KinematicsAndOdometry.motorDataMatrix[0][1]);
    //dash->PutNumber("LFPos",LFMod.GetCurrentPosition());
