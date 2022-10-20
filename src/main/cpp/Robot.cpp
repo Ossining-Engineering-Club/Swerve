@@ -81,9 +81,11 @@ void Robot::TeleopInit() {
 void Robot::TeleopPeriodic() {
   //Apperently Xbox inputs or reversed compared to joystick
   //Note Deadband in Xbox controller
-  const auto xSpeed = xspeedLimiter.Calculate(frc::ApplyDeadband(stick1.GetX(),0.2)*MAXMotorSPEED);
-  const auto ySpeed = yspeedLimiter.Calculate(frc::ApplyDeadband(stick1.GetY(),0.2)*MAXMotorSPEED);
-  const auto rotSpeed = rotspeedLimiter.Calculate(frc::ApplyDeadband(stick2.GetX(),0.2)*MAXOmega);
+  //Add exponential limmiter
+  //or reuce # of increments of circle
+  const auto xSpeed = xspeedLimiter.Calculate(frc::ApplyDeadband(stick1.GetX(),0.4)*MAXMotorSPEED);
+  const auto ySpeed = yspeedLimiter.Calculate(frc::ApplyDeadband(stick1.GetY(),0.4)*MAXMotorSPEED);
+  const auto rotSpeed = rotspeedLimiter.Calculate(frc::ApplyDeadband(stick2.GetX(),0.4)*MAXOmega);
   
   //KinematicsAndOdometry.SwerveOdometryGetPose(gyro.GetAngle()*1_rad);
   if(FieldOriented){

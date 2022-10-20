@@ -1,9 +1,9 @@
 #pragma once
 //offsets
-#define RFZero 2.960583
-#define RBZero 1.501767
-#define LFZero 0.771592
-#define LBZero 5.220137
+#define RFZero 4.519107
+#define RBZero 3.092505
+#define LFZero 0.766990
+#define LBZero 0.510816
 //Gear and module related stuff
 #define TurningMotorGearRatio 7.0/150.0 //find out
 #define DrivingMotorGearRatio 1/6.75 //find out

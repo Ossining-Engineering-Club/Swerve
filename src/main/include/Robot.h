@@ -55,9 +55,9 @@ class Robot : public frc::TimedRobot {
   std::string m_autoSelected;
   bool FieldOriented;
   //makes joystick input more gentel with a limit of 1/3 of a secont from 0 to 1
-  frc::SlewRateLimiter<units::scalar> xspeedLimiter{10/1_s};
-  frc::SlewRateLimiter<units::scalar> yspeedLimiter{10/1_s};
-  frc::SlewRateLimiter<units::scalar> rotspeedLimiter{10/1_s};
+  frc::SlewRateLimiter<units::scalar> xspeedLimiter{30/1_s};
+  frc::SlewRateLimiter<units::scalar> yspeedLimiter{30/1_s};
+  frc::SlewRateLimiter<units::scalar> rotspeedLimiter{30/1_s};
   
 
 

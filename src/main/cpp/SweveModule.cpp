@@ -41,13 +41,15 @@ double SwerveModule::GetCurrentPosition(){
 double SwerveModule::GetAbsEncoderPosition(){
 	double ang = absEncoder.GetPosition(); //check this
 	ang = fmod(ang,360);
-	ang *= M_PI / 180; //precentage of a full rotation
+	ang *= (M_PI / 180.0);
+	ang = fabs(ang);
+	//ang = fmod(ang,M_2_PI); //precentage of a full rotation
 	ang -= encoderOffset;//accounts for offset
 	return ang; //* absSignum;
 }
 void SwerveModule::ResetEncoder(){
 	driveEncoder->SetPosition(0);
-	turningEncoder->SetPosition(0);//SwerveModule::GetAbsEncoderPosition());//GetAbsEncoderPosition());
+	turningEncoder->SetPosition(SwerveModule::GetAbsEncoderPosition());//GetAbsEncoderPosition());
 }
 //1 = drive 0= rotator
 double SwerveModule::GetDrivePower(frc::SwerveModuleState& state){
@@ -72,11 +74,11 @@ void SwerveModule::SetToVector(frc::SwerveModuleState& state){
 	//stops automatic recentering
 	if(std::abs(state.speed.value()) > 0.001){
 		//auto optimizedstate = state.Optimize(state,(SwerveModule::GetCurrentPosition()*1_rad));
-		DriveMotor.Set(.05*GetDrivePower(state));
+		DriveMotor.Set(.5*GetDrivePower(state));
 		//dash->PutNumber("DrivePower",(optimizedstate.speed*(1/(MAXMotorSPEED*1_mps))));
 		//dash->PutNumber("angleoptim",optimizedstate.angle.Radians().value());
 		//dash->PutNumber("RotatorPower",turningPidController.Calculate(SwerveModule::GetCurrentPosition(),optimizedstate.angle.Radians().value()));
-		RotatorMotor.Set(.2*GetRotatorPower(state));
+		RotatorMotor.Set(GetRotatorPower(state));
 	}
 	else{
 		DriveMotor.Set(0);
