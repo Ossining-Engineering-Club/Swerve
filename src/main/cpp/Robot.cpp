@@ -10,7 +10,7 @@
 
 
 Robot::Robot():
-  RFMod(1, 2, 9, false,(RFZero),false,false),
+  RFMod(1, 2, 9, true,(RFZero),false,false),
 	LFMod(8, 7, 12, true,(LFZero),false,false), 
 	RBMod(3, 4, 10, false,(RBZero),false,false),
 	LBMod(5, 6, 11, true,(LBZero),false,false),
@@ -83,9 +83,9 @@ void Robot::TeleopPeriodic() {
   //Note Deadband in Xbox controller
   //Add exponential limmiter
   //or reuce # of increments of circle
-  const auto xSpeed = xspeedLimiter.Calculate(frc::ApplyDeadband(stick1.GetX(),0.4)*MAXMotorSPEED);
-  const auto ySpeed = yspeedLimiter.Calculate(frc::ApplyDeadband(stick1.GetY(),0.4)*MAXMotorSPEED);
-  const auto rotSpeed = rotspeedLimiter.Calculate(frc::ApplyDeadband(stick2.GetX(),0.4)*MAXOmega);
+  const auto xSpeed = xspeedLimiter.Calculate(frc::ApplyDeadband(controller.GetRightX(),0.4)*MAXMotorSPEED);
+  const auto ySpeed = yspeedLimiter.Calculate(frc::ApplyDeadband(controller.GetRightY(),0.4)*MAXMotorSPEED);
+  const auto rotSpeed = rotspeedLimiter.Calculate(frc::ApplyDeadband(controller.GetLeftX(),0.4)*MAXOmega);
   
   //KinematicsAndOdometry.SwerveOdometryGetPose(gyro.GetAngle()*1_rad);
   if(FieldOriented){

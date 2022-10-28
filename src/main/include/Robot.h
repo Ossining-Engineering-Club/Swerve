@@ -10,6 +10,7 @@
 #include "SwerveKnO.h"
 #include <frc/TimedRobot.h>
 #include <frc/ADXRS450_Gyro.h>
+#include <frc/XboxController.h>
 
 #include "Constants.h"
 #include <frc/AnalogPotentiometer.h>
@@ -41,7 +42,7 @@ class Robot : public frc::TimedRobot {
   frc::SwerveModuleState zeroState;
   frc::Joystick stick1{0};
   frc::Joystick stick2{1};
-
+  frc::XboxController controller{3};
   SmartDashboard* dash;
   SwerveModule RFMod;
 	SwerveModule LFMod;

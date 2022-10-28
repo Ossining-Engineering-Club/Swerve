@@ -2,8 +2,8 @@
 //offsets
 #define RFZero 4.519107
 #define RBZero 3.092505
-#define LFZero 0.766990
-#define LBZero 0.510816
+#define LFZero -0.766990
+#define LBZero -0.510816
 //Gear and module related stuff
 #define TurningMotorGearRatio 7.0/150.0 //find out
 #define DrivingMotorGearRatio 1/6.75 //find out
@@ -15,7 +15,7 @@
 
 #define MAXMotorSPEED 4.4196 //in meters per second converted from ft/s
 #define MAXTotalSPEED 4.4196/4 
-#define MAXOmega 4//Calculate after taking dimensions
+#define MAXOmega 1//Calculate after taking dimensions
 
 //PID for Drive
 #define KDp 0
