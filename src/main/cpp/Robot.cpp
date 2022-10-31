@@ -88,22 +88,25 @@ void Robot::TeleopPeriodic() {
   const auto rotSpeed = rotspeedLimiter.Calculate(frc::ApplyDeadband(controller.GetLeftX(),0.4)*MAXOmega);
   
   //KinematicsAndOdometry.SwerveOdometryGetPose(gyro.GetAngle()*1_rad);
-  if(FieldOriented){
-  KinematicsAndOdometry.FieldRelativeKinematics((xSpeed*1_mps),(ySpeed*1_mps),
-                                               (rotSpeed*1_rad_per_s),((gyro.GetAngle()-90)*(M_PI/180)*1_rad));
-  }else{
-  //KinematicsAndOdometry.notFieldRelativeKinematics((10_mps),(10_mps),(4_rad_per_s));
-  KinematicsAndOdometry.notFieldRelativeKinematics((0.5_mps),(0.5_mps),(0_rad_per_s));
-  }
+  if(FieldOriented)
+    {
+      KinematicsAndOdometry.FieldRelativeKinematics((xSpeed*1_mps),(ySpeed*1_mps), 
+          (rotSpeed*1_rad_per_s),((gyro.GetAngle()-90)*(M_PI/180)*1_rad));
+    }
+  else
+    {
+      //KinematicsAndOdometry.notFieldRelativeKinematics((10_mps),(10_mps),(4_rad_per_s));
+      KinematicsAndOdometry.notFieldRelativeKinematics((0.5_mps),(0.5_mps),(0_rad_per_s));
+    }
   //dash->PutNumber("Desired LF",KinematicsAndOdometry.motorDataMatrix[0][1]);
-   //dash->PutNumber("LFPos",LFMod.GetCurrentPosition());
+  //dash->PutNumber("LFPos",LFMod.GetCurrentPosition());
 
   //dash->PutNumber("LeftFMotorSpeed",KinematicsAndOdometry.motorDataMatrix[0][0]);
-   //dash->PutNumber("LeftFMotorAngle",KinematicsAndOdometry.motorDataMatrix[0][1]);
-   //dash->PutNumber("RotVal",rotSpeed);
-   //dash->PutNumber("RotationIn",LFMod.rotate);
-   //dash->PutNumber("XVal",xSpeed);
-   //dash->PutNumber("YVal",ySpeed);
+  //dash->PutNumber("LeftFMotorAngle",KinematicsAndOdometry.motorDataMatrix[0][1]);
+  //dash->PutNumber("RotVal",rotSpeed);
+  //dash->PutNumber("RotationIn",LFMod.rotate);
+  //dash->PutNumber("XVal",xSpeed);
+  //dash->PutNumber("YVal",ySpeed);
   //dash->PutNumber("EncoderAngle",LBMod.GetTurningEncoderPosition());
   dash->PutNumber("ABSLFPos",LFMod.GetAbsEncoderPosition());
   dash->PutNumber("ABSLBPos",LBMod.GetAbsEncoderPosition());
@@ -117,17 +120,17 @@ void Robot::TeleopPeriodic() {
   dash->PutNumber("RLFPos",LFMod.GetRotatorPower(KinematicsAndOdometry.frontLeft));
   dash->PutNumber("RLBPos",LBMod.GetRotatorPower(KinematicsAndOdometry.backLeft));
   dash->PutNumber("RRFPos",RFMod.GetRotatorPower(KinematicsAndOdometry.frontRight));
-  dash->PutNumber("RRBPos",RBMod.GetRotatorPower(KinematicsAndOdometry.backLeft));
+  dash->PutNumber("RRBPos",RBMod.GetRotatorPower(KinematicsAndOdometry.backRight)); 
   dash->PutNumber("DLFPos",LFMod.GetDrivePower(KinematicsAndOdometry.frontLeft));
   dash->PutNumber("DLBPos",LBMod.GetDrivePower(KinematicsAndOdometry.backLeft));
   dash->PutNumber("DRFPos",RFMod.GetDrivePower(KinematicsAndOdometry.frontRight));
-  dash->PutNumber("DRBPos",RBMod.GetDrivePower(KinematicsAndOdometry.backLeft));
+  dash->PutNumber("DRBPos",RBMod.GetDrivePower(KinematicsAndOdometry.backRight));
   frc::SmartDashboard::PutNumber("Gyro", gyro.GetAngle()*(M_PI/180));
   //dash->PutNumber("angle",KinematicsAndOdometry.frontLeft.angle.Radians().value());
   LFMod.SetToVector(KinematicsAndOdometry.frontLeft);
   RFMod.SetToVector(KinematicsAndOdometry.frontRight);
   LBMod.SetToVector(KinematicsAndOdometry.backLeft);
-  RBMod.SetToVector(KinematicsAndOdometry.backLeft);
+  RBMod.SetToVector(KinematicsAndOdometry.backRight);
   //KinematicsAndOdometry.notFieldRelativeKinematics((-1_mps),(-1_mps),(0_rad_per_s));
   /*LFMod.SetToVector(KinematicsAndOdometry.frontLeft);
   RFMod.SetToVector(KinematicsAndOdometry.frontRight);
