@@ -19,8 +19,8 @@ turningPidController(KRp,KRi,KRd)
 	else
 	absSignum = 1;
 
-	RotatorMotor.SetInverted(DriveReverse);
-	DriveMotor.SetInverted(TurnReverse);
+	RotatorMotor.SetInverted(TurnReverse);
+	DriveMotor.SetInverted(DriveReverse);
 	dash -> init();
 	driveEncoder = new rev::SparkMaxRelativeEncoder(DriveMotor.GetEncoder());
 	turningEncoder = new rev::SparkMaxRelativeEncoder(RotatorMotor.GetEncoder());

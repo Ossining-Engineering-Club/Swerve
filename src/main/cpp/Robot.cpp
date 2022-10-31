@@ -10,7 +10,7 @@
 
 
 Robot::Robot():
-  RFMod(1, 2, 9, true,(RFZero),false,false),
+  RFMod(1, 2, 9, true,(RFZero),true,false),
 	LFMod(8, 7, 12, true,(LFZero),false,false), 
 	RBMod(3, 4, 10, false,(RBZero),false,false),
 	LBMod(5, 6, 11, true,(LBZero),false,false),
