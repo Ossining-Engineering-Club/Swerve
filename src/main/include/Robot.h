@@ -16,11 +16,9 @@
 #include <frc/AnalogPotentiometer.h>
 #include <frc/Joystick.h>
 #include <frc/smartdashboard/SmartDashboard.h>
-#include <frc/XboxController.h>
 #include <frc/smartdashboard/SendableChooser.h>
 #include <frc/filter/SlewRateLimiter.h>
 #include <frc/kinematics/SwerveModuleState.h>
-#include <frc/Joystick.h>
 
 class Robot : public frc::TimedRobot {
  public:

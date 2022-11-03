@@ -1,6 +1,5 @@
 #pragma once
 #include <frc/smartdashboard/SmartDashboard.h>
-#include <frc/Encoder.h>
 #include <frc/motorcontrol/Spark.h>
 #include <frc/CounterBase.h>
 
