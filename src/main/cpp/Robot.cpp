@@ -49,23 +49,17 @@ public:
   }
 
   void AutonomousInit() {
-    m_autoSelected = m_chooser.GetSelected();
-    // m_autoSelected = SmartDashboard::GetString("Auto Selector", kAutoNameDefault);
-    fmt::print("Auto selected: {}\n", m_autoSelected);
-    if (m_autoSelected == kAutoNameCustom) {
-      // Custom Auto goes here
-    } else {
-      // Default Auto goes here
-    }
+    gyro.Reset();
+    FieldOriented = true;
+    LFMod.ResetEncoder(); LBMod.ResetEncoder();
+    RFMod.ResetEncoder(); RBMod.ResetEncoder();
   }
 
   void TeleopInit() {
     gyro.Reset();
     FieldOriented = true;
-    LFMod.ResetEncoder();
-    LBMod.ResetEncoder();
-    RFMod.ResetEncoder();
-    RBMod.ResetEncoder();
+    LFMod.ResetEncoder(); LBMod.ResetEncoder();
+    RFMod.ResetEncoder(); RBMod.ResetEncoder();
   }
 
   void TeleopPeriodic() {
@@ -78,7 +72,7 @@ public:
     
     //swerve_drive.SwerveOdometryGetPose(gyro.GetAngle()*1_rad);
     if(FieldOriented) swerve_drive.FieldRelativeKinematics((xSpeed*1_mps),(ySpeed*1_mps), 
-                          (rotSpeed*1_rad_per_s),((gyro.GetAngle()-90)*(M_PI/180)*1_rad));
+      (rotSpeed*1_rad_per_s),((gyro.GetAngle()-90)*(M_PI/180)*1_rad));
     else swerve_drive.RobotRelativeKinematics((0.5_mps),(0.5_mps),(0_rad_per_s));
  
     dash->PutNumber("ABSLFPos",LFMod.GetAbsEncoderPosition());
