@@ -18,7 +18,7 @@ class Robot : public frc::TimedRobot {
   frc::SwerveModuleState zeroState;
   frc::XboxController controller{3};
   SmartDashboard* dash;
-  SwerveModule RFMod{1, 2, 9, true,(RFZERO),true,false};
+  SwerveModule RFMod{1, 2, 9, true,(RFZERO),false,false};
 	SwerveModule LFMod{8, 7, 12, true,(LFZERO),false,false};
 	SwerveModule RBMod{3, 4, 10, false,(RBZERO),false,false};
 	SwerveModule LBMod{5, 6, 11, true,(LBZERO),false,false};
@@ -51,12 +51,17 @@ public:
   void AutonomousInit() {
     gyro.Reset();
     FieldOriented = true;
+    
     LFMod.ResetEncoder(); LBMod.ResetEncoder();
     RFMod.ResetEncoder(); RBMod.ResetEncoder();
   }
 
   void TeleopInit() {
     gyro.Reset();
+    LFMod.setOffset();
+    LBMod.setOffset();
+    RFMod.setOffset();
+    RBMod.setOffset();
     FieldOriented = true;
     LFMod.ResetEncoder(); LBMod.ResetEncoder();
     RFMod.ResetEncoder(); RBMod.ResetEncoder();

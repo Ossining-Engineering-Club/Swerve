@@ -26,13 +26,13 @@ private:
 	ctre::phoenix::sensors::CANCoder absEncoder;
 	rev::SparkMaxRelativeEncoder * driveEncoder;
 	rev::SparkMaxRelativeEncoder * turningEncoder;
-
+		double offset;	
 	SmartDashboard* dash;
 	PIDController turningPidController;
 	
 public:
 	SwerveModule(int RotatorMotorNo, int DriveMotorNo, int CANCoderId, bool reverseDirection, double Offset, bool DriveReverse, bool TurnReverse);
-	
+	void setOffset();
 	//abs encoder vals
 	double absSignum;
 	double encoderOffset;

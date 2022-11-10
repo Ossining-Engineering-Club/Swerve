@@ -19,6 +19,7 @@ turningPidController(KRp,KRi,KRd)
 	RotatorMotor.SetInverted(TurnReverse);
 	DriveMotor.SetInverted(DriveReverse);
 	dash -> init();
+
 	driveEncoder = new rev::SparkMaxRelativeEncoder(DriveMotor.GetEncoder());
 	turningEncoder = new rev::SparkMaxRelativeEncoder(RotatorMotor.GetEncoder());
 
@@ -30,23 +31,27 @@ turningPidController(KRp,KRi,KRd)
     turningPidController.EnableContinuousInput(-M_PI,M_PI);
 	SwerveModule::ResetEncoder();
 }
-
+void SwerveModule::setOffset(){
+	offset = SwerveModule::GetAbsEncoderPosition();
+}
 double SwerveModule::GetCurrentPosition(){
-	return turningEncoder->GetPosition(); //(fmod(turningEncoder->GetPosition(),2*M_PI);//-M_PI);
+	return turningEncoder->GetPosition()-offset; //(fmod(turningEncoder->GetPosition(),2*M_PI);//-M_PI);
 }
 
 //Radians
 double SwerveModule::GetAbsEncoderPosition(){
 	double ang = absEncoder.GetAbsolutePosition(); //Default Position is in degrees
-	ang = fmod(ang,360);
+	
 	ang *= (M_PI / 180.0);
 	ang -= encoderOffset;//accounts for offset
-	return fabs(ang); //* absSignum;
+	if ( ang < -M_PI) ang += 2 * M_PI;
+	else if (ang > M_PI) ang -= 2*M_PI;
+	return ang; //* absSignum;
 }
 
 void SwerveModule::ResetEncoder(){
 	driveEncoder->SetPosition(0);
-	turningEncoder->SetPosition(SwerveModule::GetAbsEncoderPosition());//GetAbsEncoderPosition());
+	turningEncoder->SetPosition(0);//(SwerveModule::GetAbsEncoderPosition()/(2.0*M_PI)));//GetAbsEncoderPosition());
 }
 
 //1 = drive 0= rotator
