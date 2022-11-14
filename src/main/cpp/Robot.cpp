@@ -49,20 +49,19 @@ public:
   }
 
   void AutonomousInit() {
+    FieldOriented = false; // Use Robot Oriented Control for Autonomous
     gyro.Reset();
-    FieldOriented = true;
-    
     LFMod.ResetEncoder(); LBMod.ResetEncoder();
     RFMod.ResetEncoder(); RBMod.ResetEncoder();
   }
 
   void TeleopInit() {
+    FieldOriented = true; //Use Field Oriented Control
     gyro.Reset();
     LFMod.setOffset();
     LBMod.setOffset();
     RFMod.setOffset();
     RBMod.setOffset();
-    FieldOriented = true;
     LFMod.ResetEncoder(); LBMod.ResetEncoder();
     RFMod.ResetEncoder(); RBMod.ResetEncoder();
   }
@@ -78,7 +77,7 @@ public:
     //swerve_drive.SwerveOdometryGetPose(gyro.GetAngle()*1_rad);
     if(FieldOriented) swerve_drive.FieldRelativeKinematics((xSpeed*1_mps),(ySpeed*1_mps), 
       (rotSpeed*1_rad_per_s),((gyro.GetAngle()-90)*(M_PI/180)*1_rad));
-    else swerve_drive.RobotRelativeKinematics((0.5_mps),(0.5_mps),(0_rad_per_s));
+    else swerve_drive.RobotRelativeKinematics((0.5_mps),(0.5_mps),(0_rad_per_s)); //ERROR Wrong Inputs
  
     dash->PutNumber("ABSLFPos",LFMod.GetAbsEncoderPosition());
     dash->PutNumber("ABSLBPos",LBMod.GetAbsEncoderPosition());

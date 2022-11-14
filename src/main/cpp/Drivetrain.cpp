@@ -11,12 +11,6 @@ odometry(kinematics, Rotation2d(gyroAngle), Pose2d(startingx, startingy,starting
 {
 //Chassis objects
 
-//Relative Wheel positions to center(Correct Values Later)
-frontLeftLocation = Translation2d(0.3175_m,0.3175_m);
-frontRightLocation = Translation2d(0.3175_m, -0.3175_m);
-backLeftLocation = Translation2d(-0.3175_m, 0.3175_m);
-backRightLocation = Translation2d(-0.3175_m, -0.3175_m);
-
 }
 //Columns are in order as frontleft, frontright, backleft, backright and the row is in order of speed and angle
 void Drivetrain::FieldRelativeKinematics(units::velocity::meters_per_second_t xspeed, units::velocity::meters_per_second_t yspeed,

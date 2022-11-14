@@ -30,8 +30,11 @@ class Drivetrain{
     private:
         SwerveDriveKinematics<4> kinematics;
         SwerveDriveOdometry<4> odometry;
-        Translation2d frontLeftLocation,backLeftLocation;
-        Translation2d frontRightLocation,backRightLocation;
+        //Relative Wheel positions to center(Correct Values Later)
+        Translation2d frontLeftLocation{0.3175_m,0.3175_m};
+        Translation2d frontRightLocation{0.3175_m, -0.3175_m};
+        Translation2d backLeftLocation{-0.3175_m, 0.3175_m};
+        Translation2d backRightLocation{-0.3175_m, -0.3175_m};
         ChassisSpeeds speeds;
         Pose2d robotPose;
         Rotation2d Angle;
