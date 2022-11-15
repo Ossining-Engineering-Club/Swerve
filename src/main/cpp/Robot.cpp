@@ -13,26 +13,25 @@
 #include <frc/kinematics/SwerveModuleState.h>
 
 class Robot : public frc::TimedRobot {
- 
- private:
-  frc::SwerveModuleState zeroState;
+  private:
   frc::XboxController controller{3};
-  SmartDashboard* dash;
-  SwerveModule RFMod{1, 2, 9, true,(RFZERO),false,false};
-	SwerveModule LFMod{8, 7, 12, true,(LFZERO),false,false};
-	SwerveModule RBMod{3, 4, 10, false,(RBZERO),false,false};
-	SwerveModule LBMod{5, 6, 11, true,(LBZERO),false,false};
-  ADXRS450_Gyro gyro;
+  frc::SmartDashboard* dash;
+  SwerveModule RFMod{1, 2, 9, true, RFZERO, false, false};
+	SwerveModule LFMod{8, 7, 12, true, LFZERO, false, false};
+	SwerveModule RBMod{3, 4, 10, false, RBZERO, false, false};
+	SwerveModule LBMod{5, 6, 11, true, LBZERO, false, false};
+  frc::ADXRS450_Gyro gyro;
   Drivetrain swerve_drive;
   frc::SendableChooser<std::string> m_chooser;
   const std::string kAutoNameDefault = "Default";
   const std::string kAutoNameCustom = "My Auto";
   std::string m_autoSelected;
   bool FieldOriented;
-  //makes joystick input more gentel with a limit of 1/3 of a secont from 0 to 1
+  //Limit joystick input to 1/3 of a secont from 0 to 1
   frc::SlewRateLimiter<units::scalar> xspeedLimiter{30/1_s};
   frc::SlewRateLimiter<units::scalar> yspeedLimiter{30/1_s};
   frc::SlewRateLimiter<units::scalar> rotspeedLimiter{30/1_s};
+  double gyroAngle; //Value for Gyro Angle
 
 public: 
   Robot():
@@ -49,19 +48,17 @@ public:
   }
 
   void AutonomousInit() {
-    FieldOriented = false; // Use Robot Oriented Control for Autonomous
+    FieldOriented = false; // Use Robot Oriented Control for Auto
     gyro.Reset();
     LFMod.ResetEncoder(); LBMod.ResetEncoder();
     RFMod.ResetEncoder(); RBMod.ResetEncoder();
   }
 
   void TeleopInit() {
+    // For actual game, we will want to line up robot square
+    // Then reset gyro in Auto and not in Teleop
     FieldOriented = true; //Use Field Oriented Control
     gyro.Reset();
-    LFMod.setOffset();
-    LBMod.setOffset();
-    RFMod.setOffset();
-    RBMod.setOffset();
     LFMod.ResetEncoder(); LBMod.ResetEncoder();
     RFMod.ResetEncoder(); RBMod.ResetEncoder();
   }
@@ -75,10 +72,16 @@ public:
     const auto rotSpeed = rotspeedLimiter.Calculate(frc::ApplyDeadband(controller.GetLeftX(),0.4)*MAXOmega);
     
     //swerve_drive.SwerveOdometryGetPose(gyro.GetAngle()*1_rad);
-    if(FieldOriented) swerve_drive.FieldRelativeKinematics((xSpeed*1_mps),(ySpeed*1_mps), 
-      (rotSpeed*1_rad_per_s),((gyro.GetAngle()-90)*(M_PI/180)*1_rad));
-    else swerve_drive.RobotRelativeKinematics((0.5_mps),(0.5_mps),(0_rad_per_s)); //ERROR Wrong Inputs
- 
+    gyroAngle = (gyro.GetAngle()-90.0)*(M_PI/180.0); //Get gyro once
+    if(FieldOriented) swerve_drive.FieldRelativeKinematics(
+      (xSpeed*1_mps),(ySpeed*1_mps),(rotSpeed*1_rad_per_s), gyroAngle*1_rad );
+    else swerve_drive.RobotRelativeKinematics(
+      (xSpeed*1_mps),(ySpeed*1_mps),(rotSpeed*1_rad_per_s));
+    LFMod.SetToVector(swerve_drive.frontLeft);
+    RFMod.SetToVector(swerve_drive.frontRight);
+    LBMod.SetToVector(swerve_drive.backLeft);
+    RBMod.SetToVector(swerve_drive.backRight);
+    //Put outputs to Dashboard last to minimize time from reads to set speeds
     dash->PutNumber("ABSLFPos",LFMod.GetAbsEncoderPosition());
     dash->PutNumber("ABSLBPos",LBMod.GetAbsEncoderPosition());
     dash->PutNumber("ABSRFPos",RFMod.GetAbsEncoderPosition());
@@ -95,11 +98,7 @@ public:
     dash->PutNumber("DLBPos",LBMod.GetDrivePower(swerve_drive.backLeft));
     dash->PutNumber("DRFPos",RFMod.GetDrivePower(swerve_drive.frontRight));
     dash->PutNumber("DRBPos",RBMod.GetDrivePower(swerve_drive.backRight));
-    dash->PutNumber("Gyro", gyro.GetAngle()*(M_PI/180));
-    LFMod.SetToVector(swerve_drive.frontLeft);
-    RFMod.SetToVector(swerve_drive.frontRight);
-    LBMod.SetToVector(swerve_drive.backLeft);
-    RBMod.SetToVector(swerve_drive.backRight);
+    dash->PutNumber("Gyro", gyroAngle);
   }
 };
 
