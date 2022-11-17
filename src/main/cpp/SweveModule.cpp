@@ -19,8 +19,8 @@ absEncoder(CANCoderId)
 	driveEncoder->SetVelocityConversionFactor(DriveEncoderPosFactor);
 	turningEncoder->SetVelocityConversionFactor(turnEncoderPosFactor);
     turningPIDController.EnableContinuousInput(
-      -units::radian_t(wpi::numbers::pi), 
-	  units::radian_t(wpi::numbers::pi));;
+      -1.0*wpi::numbers::pi, 
+	  wpi::numbers::pi);
 	SwerveModule::ResetEncoder();
 }
 // Get State to be used for odometry
@@ -58,6 +58,28 @@ double SwerveModule::GetRotatorPower(){
   	return (turningEncoder->GetVelocity());
 }
 
+
+//Input to motor state
+void SwerveModule::SetToVector(frc::SwerveModuleState& state){
+	//stops automatic recentering
+	if(std::abs(state.speed.value()) > 0.001){
+	frc::SwerveModuleState optimizedstate = state.Optimize(state,(SwerveModule::GetCurrentAngle()*1_rad));
+
+	double turningVal = turningPIDController.Calculate(
+			SwerveModule::GetCurrentAngle(),optimizedstate.angle.Radians().value());
+	if (turningVal > 1.0) turningVal = 1.0;
+	else if (turningVal < -1.0) turningVal = -1.0;
+	
+	
+		DriveMotor.Set(0.4*optimizedstate.speed*(1.0/(MAX_SPEED*1_mps)));
+		RotatorMotor.Set(0.7*turningVal);
+	}
+	else{
+		DriveMotor.Set(0.0);
+		RotatorMotor.Set(0.0);
+	}
+}
+/*
 //Input to motor state
 void SwerveModule::SetToVector(frc::SwerveModuleState& referenceState){
   // 1. Optimize reference state to avoid spinning further than 90 degrees
@@ -92,3 +114,4 @@ void SwerveModule::SetToVector(frc::SwerveModuleState& referenceState){
   }
 	
 }
+*/

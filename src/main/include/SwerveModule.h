@@ -40,9 +40,9 @@ class SwerveModule{
 	double absEncoderOffset;  //Set on init from constants
 	double turningEncoderOffset;
 	frc2::PIDController drivePIDController{KDP, KDI, KDD};
-  	frc::ProfiledPIDController<units::radians>
-	  turningPIDController{KRP, KRI, KRD,
-	  {MODULE_MAX_ANGULAR_VELOCITY, MODULE_MAX_ANGULAR_ACCELERATION}};
+  	frc2::PIDController//<units::radians>
+	  turningPIDController{KRP, KRI, KRD};//,
+	  //{MODULE_MAX_ANGULAR_VELOCITY, MODULE_MAX_ANGULAR_ACCELERATION}};
 	frc::SimpleMotorFeedforward<units::meters>
 	 	drivingFeedforward{1_V, 3_V / 1_mps};
   	frc::SimpleMotorFeedforward<units::radians> 

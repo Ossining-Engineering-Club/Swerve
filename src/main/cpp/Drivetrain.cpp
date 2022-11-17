@@ -17,7 +17,7 @@ void Drivetrain::Drive(
   auto states = kinematics.ToSwerveModuleStates(
       FieldOreinted ? frc::ChassisSpeeds::FromFieldRelativeSpeeds(
                         xspeed, yspeed, angularVelocity, 
-                        gyro.GetRotation2d())
+                        Drivetrain::GetGyro()*1_rad)
                     : frc::ChassisSpeeds{xspeed, yspeed, 
                         angularVelocity});
 
@@ -52,7 +52,7 @@ void Drivetrain::ResetDrive()
 }
 double Drivetrain::GetGyro()
 {
-    return (gyro.GetAngle()-90.0)*(M_PI/180.0);
+    return (gyro.GetAngle()*(M_PI/180.0));
 }
 double Drivetrain::GetValue(int swerve_module, int readItem)
 {

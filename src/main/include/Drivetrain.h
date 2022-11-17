@@ -40,10 +40,10 @@ class Drivetrain{
     private:
         frc::ADXRS450_Gyro gyro;
         //Relative Wheel positions to center(Correct Values Later)
-        Translation2d frontLeftLocation{0.3175_m,0.3175_m};
+        Translation2d frontLeftLocation{-0.3175_m,-0.3175_m};
         Translation2d frontRightLocation{0.3175_m, -0.3175_m};
         Translation2d backLeftLocation{-0.3175_m, 0.3175_m};
-        Translation2d backRightLocation{-0.3175_m, -0.3175_m};
+        Translation2d backRightLocation{0.3175_m, 0.3175_m};
 
         SwerveDriveKinematics<4> kinematics{ frontLeftLocation, 
             frontRightLocation, backLeftLocation, backRightLocation};
