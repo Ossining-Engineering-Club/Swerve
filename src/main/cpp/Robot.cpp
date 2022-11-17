@@ -40,14 +40,19 @@ public:
   }
 
   void AutonomousInit() {
-    FieldOriented = false; // Use Robot Oriented Control for Auto
+    FieldOriented = FIELD_ORIENTED; // Use Robot Oriented Control for Auto
     swerve.ResetDrive();
   }
+
+void AutonomousPeriodic() {
+      swerve.UpdateOdometry();
+  }
+
 
   void TeleopInit() {
     // For actual game, we will want to line up robot square
     // Then reset gyro in Auto and not in Teleop
-    FieldOriented = true; //Use Field Oriented Control
+    FieldOriented = FIELD_ORIENTED; 
     swerve.ResetDrive();
   }
 
@@ -61,6 +66,7 @@ public:
     
     //swerve_drive.SwerveOdometryGetPose(gyro.GetAngle()*1_rad);
     swerve.Drive((xSpeed*1_mps),(ySpeed*1_mps),(rotSpeed*1_rad_per_s),FieldOriented);
+    swerve.UpdateOdometry();
 
     //Put outputs to Dashboard last to minimize time from reads to set speeds
     // Here is an alteraitnve read if the current format fails

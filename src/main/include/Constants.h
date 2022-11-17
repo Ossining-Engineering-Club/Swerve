@@ -1,5 +1,6 @@
 #pragma once
 
+#define FIELD_ORIENTED false
 //Gear and module related stuff
 #define TurningMotorGearRatio 7.0/150.0 //find out
 #define DrivingMotorGearRatio 1/6.75 //find out
