@@ -48,7 +48,6 @@ void AutonomousPeriodic() {
       swerve.UpdateOdometry();
   }
 
-
   void TeleopInit() {
     // For actual game, we will want to line up robot square
     // Then reset gyro in Auto and not in Teleop

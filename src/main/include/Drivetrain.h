@@ -50,6 +50,5 @@ class Drivetrain{
         //FIX ODOMETRY OBJECT
         SwerveDriveOdometry<4> odometry {kinematics, gyro.GetRotation2d()}; 
 
-        //ChassisSpeeds speeds;
         Pose2d robotPose;
 };

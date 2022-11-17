@@ -41,15 +41,11 @@ void Drivetrain::SwerveOdometryGetPose(units::angle::radian_t gyroAngle)
 }
 void Drivetrain::ResetDrive()
 {
-    //Important: If at any time, you reset your gyroscope, 
-    // the resetPose method MUST be called with the new gyro angle.
-    //The robot pose can be reset via the resetPose method. This method 
-    //accepts two arguments – the new field-relative pose 
-    //and the current gyro angle.
-
     gyro.Reset();
     LFMod.ResetEncoder(); LBMod.ResetEncoder();
     RFMod.ResetEncoder(); RBMod.ResetEncoder();
+    //We should also reset the odometry here as well
+    //odometry.ResetPosition((const frc::Pose2d &pose, const frc::Rotation2d &gyroAngle)
 }
 double Drivetrain::GetGyro()
 {
