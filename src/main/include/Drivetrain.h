@@ -45,8 +45,8 @@ class Drivetrain{
         Translation2d backLeftLocation{-0.3175_m, 0.3175_m};
         Translation2d backRightLocation{-0.3175_m, -0.3175_m};
 
-        SwerveDriveKinematics<4> kinematics{ frontLeftLocation, frontRightLocation,
-            backLeftLocation, backRightLocation};
+        SwerveDriveKinematics<4> kinematics{ frontLeftLocation, 
+            frontRightLocation, backLeftLocation, backRightLocation};
         //FIX ODOMETRY OBJECT
         SwerveDriveOdometry<4> odometry {kinematics, gyro.GetRotation2d()}; 
 

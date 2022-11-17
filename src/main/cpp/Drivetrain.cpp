@@ -34,6 +34,9 @@ void Drivetrain::UpdateOdometry() {
     odometry.Update(gyro.GetRotation2d(), LFMod.GetState(),
     RFMod.GetState(), LBMod.GetState(), RBMod.GetState());
 }
+// Need to Update to a OdometryGetPose for doing Autonomous
+// Get Pose should just return Pose and should not update
+// We should have GetPose displayed on the dash
 void Drivetrain::SwerveOdometryGetPose(units::angle::radian_t gyroAngle)
 {
     Rotation2d Angle = Rotation2d(gyroAngle);

@@ -67,7 +67,7 @@ void AutonomousPeriodic() {
     swerve.Drive((xSpeed*1_mps),(ySpeed*1_mps),(rotSpeed*1_rad_per_s),FieldOriented);
     swerve.UpdateOdometry();
 
-    //Put outputs to Dashboard last to minimize time from reads to set speeds
+    //Dash should be updated 1 out of every 100 calls to not slow things down
     // Here is an alteraitnve read if the current format fails
     //dash->PutNumber("ABSLFPos",swerve.GetValue(L_FRONT, ABS_ANGLE));
     dash->PutNumber("ABSLBPos",swerve.LFMod.GetAbsEncoderAngle());
