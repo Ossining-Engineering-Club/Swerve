@@ -3,14 +3,14 @@
 #define FIELD_ORIENTED true
 //Gear and module related stuff
 #define TurningMotorGearRatio 7.0/150.0 //find out
-#define DrivingMotorGearRatio 1/6.75 //find out
+#define DrivingMotorGearRatio (1.0/6.75) //find out
 #define WheelDiameterInMeters 0.1016 //find out
 #define DriveEncoderPosFactor (DrivingMotorGearRatio * M_PI * WheelDiameterInMeters)
-#define DriveEncoderVelocityFactor (DriveEncoderPosFactor / 60)
-#define turnEncoderPosFactor (TurningMotorGearRatio * M_PI *2)
-#define turnEncoderVelocityFactor (turnEncoderPosFactor / 60)
+#define DriveEncoderVelocityFactor (DriveEncoderPosFactor / 60.0)
+#define turnEncoderPosFactor (TurningMotorGearRatio * M_PI *2.0)
+#define turnEncoderVelocityFactor (turnEncoderPosFactor / 60.0)
 #define MAX_SPEED 4.441 //Maximum wheel speed in meters per sec 
-#define MAX_TURN_RATE 4.0 //In Radians per second
+#define MAX_TURN_RATE 6.2 //In Radians per second
 
 //Offsets for Absolute Encoders
 #define RFZERO (1.761010-1.57079632)

@@ -23,7 +23,7 @@ class Drivetrain{
             units::radians_per_second_t angularVelocity,
             bool FieldOriented);
         void UpdateOdometry();
-        void SwerveOdometryGetPose(units::angle::radian_t gyroAngle);
+        frc::Pose2d SwerveOdometryGetPose();
         void ResetDrive();
         double GetGyro();
         //States
@@ -47,7 +47,7 @@ class Drivetrain{
         SwerveDriveKinematics<4> kinematics{ frontLeftLocation, 
             frontRightLocation, backLeftLocation, backRightLocation};
         //FIX ODOMETRY OBJECT
-        SwerveDriveOdometry<4> odometry {kinematics, gyro.GetRotation2d()}; 
+        SwerveDriveOdometry<4> odometry {kinematics, gyro.GetRotation2d(),robotPose}; 
 
         Pose2d robotPose;
 };

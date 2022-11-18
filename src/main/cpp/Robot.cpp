@@ -8,6 +8,7 @@
 #include <frc/XboxController.h>
 #include "Constants.h"
 #include <frc/filter/SlewRateLimiter.h>
+#include <frc/smartdashboard/Field2d.h>
 #include <frc/kinematics/SwerveModuleState.h>
 
 class Robot : public frc::TimedRobot {
@@ -19,6 +20,7 @@ class Robot : public frc::TimedRobot {
   const std::string kAutoNameDefault = "Default";
   const std::string kAutoNameCustom = "My Auto";
   std::string m_autoSelected;
+  frc::Field2d m_field;
   bool FieldOriented;
   //Limit joystick input to 1/3 of a secont from 0 to 1
   frc::SlewRateLimiter<units::scalar> xspeedLimiter{30/1_s};
@@ -28,7 +30,7 @@ class Robot : public frc::TimedRobot {
 public: 
   Robot():
       //Initializa swerve_drive with the starting position and angle on the field
-      swerve(0_m,0_m,0.0*1_rad)
+      swerve(5_m,5_m,0.0*1_rad)
       { 
         dash -> init();
       }
@@ -37,6 +39,7 @@ public:
     m_chooser.SetDefaultOption(kAutoNameDefault, kAutoNameDefault);
     m_chooser.AddOption(kAutoNameCustom, kAutoNameCustom);
     frc::SmartDashboard::PutData("Auto Modes", &m_chooser);
+    frc::SmartDashboard::PutData("Field",&m_field);
   }
 
   void AutonomousInit() {
@@ -53,9 +56,11 @@ void AutonomousPeriodic() {
     // Then reset gyro in Auto and not in Teleop
     FieldOriented = FIELD_ORIENTED; 
     swerve.ResetDrive();
+  
   }
 
   void TeleopPeriodic() {
+    m_field.SetRobotPose(swerve.SwerveOdometryGetPose());
     //Note: Xbox inputs are reversed compared to joystick
     //Note: Deadband in Xbox controller
     //Add exponential limmiter or reuse # of increments of circle
@@ -68,6 +73,12 @@ void AutonomousPeriodic() {
     swerve.UpdateOdometry();
 
     //Dash should be updated 1 out of every 100 calls to not slow things down
+<<<<<<< Updated upstream
+=======
+    // Here is an alteraitnve read if the current format fails
+    //dash->PutNumber("ABSLFPos",swerve.GetValue(L_FRONT, ABS_ANGLE));
+    /*
+>>>>>>> Stashed changes
     dash->PutNumber("ABSLBPos",swerve.LFMod.GetAbsEncoderAngle());
     dash->PutNumber("ABSLBPos",swerve.LBMod.GetAbsEncoderAngle());
     dash->PutNumber("ABSRFPos",swerve.RFMod.GetAbsEncoderAngle());
@@ -84,7 +95,7 @@ void AutonomousPeriodic() {
     dash->PutNumber("DLBPos",swerve.LBMod.GetDrivePower());
     dash->PutNumber("DRFPos",swerve.RFMod.GetDrivePower());
     dash->PutNumber("DRBPos",swerve.RBMod.GetDrivePower());
-    dash->PutNumber("Gyro", swerve.GetGyro());
+    dash->PutNumber("Gyro", swerve.GetGyro());*/
   }
 };
 

@@ -16,8 +16,8 @@ absEncoder(CANCoderId)
 	turningEncoder = new rev::SparkMaxRelativeEncoder(RotatorMotor.GetEncoder());
 	driveEncoder->SetPositionConversionFactor(DriveEncoderPosFactor);
 	turningEncoder->SetPositionConversionFactor(turnEncoderPosFactor);
-	driveEncoder->SetVelocityConversionFactor(DriveEncoderPosFactor);
-	turningEncoder->SetVelocityConversionFactor(turnEncoderPosFactor);
+	driveEncoder->SetVelocityConversionFactor(DriveEncoderVelocityFactor);
+	turningEncoder->SetVelocityConversionFactor(turnEncoderVelocityFactor);
     turningPIDController.EnableContinuousInput(
       -1.0*wpi::numbers::pi, 
 	  wpi::numbers::pi);
