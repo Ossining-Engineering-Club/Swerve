@@ -26,7 +26,6 @@ class Drivetrain{
         void SwerveOdometryGetPose(units::angle::radian_t gyroAngle);
         void ResetDrive();
         double GetGyro();
-        double GetValue(int swerve_module, int readItem );
         //States
         SwerveModuleState frontLeft;
         SwerveModuleState frontRight;

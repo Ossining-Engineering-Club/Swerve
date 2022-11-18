@@ -54,16 +54,3 @@ double Drivetrain::GetGyro()
 {
     return (gyro.GetAngle()*(M_PI/180.0));
 }
-double Drivetrain::GetValue(int swerve_module, int readItem)
-{
-    double readout=0.0;
-    switch (readItem) {
-        case ABS_ANGLE:
-            if(swerve_module == L_FRONT) readout=LFMod.GetAbsEncoderAngle();
-            else if(swerve_module == R_FRONT) readout=RFMod.GetAbsEncoderAngle();
-            else if(swerve_module == L_BACK) readout=LBMod.GetAbsEncoderAngle();
-            else if(swerve_module == R_BACK) readout=RBMod.GetAbsEncoderAngle();
-            break;            
-    }
-    return (readout);
-}
