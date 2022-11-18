@@ -23,7 +23,7 @@ class Drivetrain{
             units::radians_per_second_t angularVelocity,
             bool FieldOriented);
         void UpdateOdometry();
-        void SwerveOdometryGetPose(units::angle::radian_t gyroAngle);
+        frc::Pose2d SwerveOdometryGetPose();
         void ResetDrive();
         double GetGyro();
         //States
