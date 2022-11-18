@@ -37,10 +37,9 @@ void Drivetrain::UpdateOdometry() {
 // Need to Update to a OdometryGetPose for doing Autonomous
 // Get Pose should just return Pose and should not update
 // We should have GetPose displayed on the dash
-void Drivetrain::SwerveOdometryGetPose(units::angle::radian_t gyroAngle)
+frc::Pose2d Drivetrain::SwerveOdometryGetPose()
 {
-    Rotation2d Angle = Rotation2d(gyroAngle);
-    robotPose = odometry.Update(Angle, frontLeft,frontRight,backLeft,backRight);
+    return odometry.GetPose();
 }
 void Drivetrain::ResetDrive()
 {
