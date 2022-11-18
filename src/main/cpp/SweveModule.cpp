@@ -1,89 +1,117 @@
 #include "SwerveModule.h"
-#include <fmt/core.h>
-#include <cmath>
 
-
-#include <frc/smartdashboard/SmartDashboard.h>
-using namespace frc;
-SwerveModule::SwerveModule(int RotatorMotorNo, int DriveMotorNo, int CANCoderId, bool reverseDirection, double Offset, bool DriveReverse,
-						   bool TurnReverse):
+SwerveModule::SwerveModule(int RotatorMotorNo, 
+	int DriveMotorNo, int CANCoderId, bool reverseDirection, 
+	double absEncoderOffsetConstant, bool DriveReverse, bool TurnReverse):
 RotatorMotor(RotatorMotorNo,rev::CANSparkMax::MotorType::kBrushless),
 DriveMotor(DriveMotorNo, rev::CANSparkMax::MotorType::kBrushless),
-absEncoder(CANCoderId),
-turningPidController(KRp,KRi,KRd)
+absEncoder(CANCoderId)
 {
-	encoderOffset = Offset;
-
-	if(reverseDirection == true)
-	absSignum = -1;
-	else
-	absSignum = 1;
-
+	absEncoderOffset = absEncoderOffsetConstant; //Assign from constants Table
+	if(reverseDirection == true) absSignum = -1.0;
+	else absSignum = 1.0;
 	RotatorMotor.SetInverted(TurnReverse);
 	DriveMotor.SetInverted(DriveReverse);
-	dash -> init();
 	driveEncoder = new rev::SparkMaxRelativeEncoder(DriveMotor.GetEncoder());
 	turningEncoder = new rev::SparkMaxRelativeEncoder(RotatorMotor.GetEncoder());
-
 	driveEncoder->SetPositionConversionFactor(DriveEncoderPosFactor);
 	turningEncoder->SetPositionConversionFactor(turnEncoderPosFactor);
-	driveEncoder->SetVelocityConversionFactor(DriveEncoderPosFactor);
-	turningEncoder->SetVelocityConversionFactor(turnEncoderPosFactor);
-
-    turningPidController.EnableContinuousInput(-M_PI,M_PI);
+	driveEncoder->SetVelocityConversionFactor(DriveEncoderVelocityFactor);
+	turningEncoder->SetVelocityConversionFactor(turnEncoderVelocityFactor);
+    turningPIDController.EnableContinuousInput(
+      -1.0*wpi::numbers::pi, 
+	  wpi::numbers::pi);
 	SwerveModule::ResetEncoder();
-	
 }
-double SwerveModule::GetCurrentPosition(){
-	return turningEncoder->GetPosition();//(fmod(turningEncoder->GetPosition(),2*M_PI);//-M_PI);
+// Get State to be used for odometry
+frc::SwerveModuleState SwerveModule::GetState() const 
+{
+  return {units::meters_per_second_t{driveEncoder->GetVelocity()},
+          frc::Rotation2d(units::radian_t((turningEncoder->GetPosition())-turningEncoderOffset))};
 }
-//Radians
-double SwerveModule::GetAbsEncoderPosition(){
-	double ang = absEncoder.GetPosition(); //check this
-	ang = fmod(ang,360);
-	ang *= (M_PI / 180.0);
-	//ang = fabs(ang);
-	//ang = fmod(ang,M_2_PI); //precentage of a full rotation
-	ang -= encoderOffset;//accounts for offset
-	return fabs(ang); //* absSignum;
+//Get wheel angle from Motor encoder subtracting Offest seen on absolute encoder
+double SwerveModule::GetCurrentAngle(){
+	return turningEncoder->GetPosition()-turningEncoderOffset; 
 }
+//Return the Absolute Encoder Angle between -Pi and +PI
+double SwerveModule::GetAbsEncoderAngle(){
+	double ang = absEncoder.GetAbsolutePosition(); //Units are degrees
+	ang *= (M_PI / 180.0);	 		// Convert to Radians
+	ang -= absEncoderOffset;    	// Subtract offset from Constants
+	// Ensure value is between -PI and +PI
+	if ( ang < -M_PI) ang += 2.0 * M_PI;
+	else if (ang > M_PI) ang -= 2.0 * M_PI;
+	return ang; 
+}
+//Get Absolute Encoder Offset and Reset Encoder positions for relative Enciders
 void SwerveModule::ResetEncoder(){
-	driveEncoder->SetPosition(0);
-	turningEncoder->SetPosition(SwerveModule::GetAbsEncoderPosition());//GetAbsEncoderPosition());
+	turningEncoderOffset = SwerveModule::GetAbsEncoderAngle();
+	driveEncoder->SetPosition(0.0);
+	turningEncoder->SetPosition(0.0);
 }
-//1 = drive 0= rotator
-double SwerveModule::GetDrivePower(frc::SwerveModuleState& state){
-	auto optimizedstate = state.Optimize(state,(SwerveModule::GetCurrentPosition()*1_rad));
-	//auto optimizedstate = state.Optimize(state,(SwerveModule::GetCurrentPosition()*1_rad));
-	return optimizedstate.speed*(1/(MAXMotorSPEED*1_mps));
+
+double SwerveModule::GetDrivePower(){
+	return (driveEncoder->GetVelocity());
 }
-double SwerveModule::GetRotatorPower(frc::SwerveModuleState& state){
-	auto optimizedstate = state.Optimize(state,(SwerveModule::GetCurrentPosition()*1_rad));
-	double turningVal;
-	if(turningPidController.Calculate(SwerveModule::GetCurrentPosition(),optimizedstate.angle.Radians().value())>1)
-		turningVal=1;
-	else if(turningPidController.Calculate(SwerveModule::GetCurrentPosition(),optimizedstate.angle.Radians().value())<-1)
-		turningVal=-1;
-	else
-		turningVal = turningPidController.Calculate(SwerveModule::GetCurrentPosition(),optimizedstate.angle.Radians().value());
-	//auto optimizedstate = state.Optimize(state,(SwerveModule::GetCurrentPosition()*1_rad));
-	return turningVal;
+
+double SwerveModule::GetRotatorPower(){
+  	return (turningEncoder->GetVelocity());
 }
+
+
 //Input to motor state
 void SwerveModule::SetToVector(frc::SwerveModuleState& state){
 	//stops automatic recentering
 	if(std::abs(state.speed.value()) > 0.001){
-		//auto optimizedstate = state.Optimize(state,(SwerveModule::GetCurrentPosition()*1_rad));
-		DriveMotor.Set(.2*GetDrivePower(state));
-		//dash->PutNumber("DrivePower",(optimizedstate.speed*(1/(MAXMotorSPEED*1_mps))));
-		//dash->PutNumber("angleoptim",optimizedstate.angle.Radians().value());
-		//dash->PutNumber("RotatorPower",turningPidController.Calculate(SwerveModule::GetCurrentPosition(),optimizedstate.angle.Radians().value()));
-		RotatorMotor.Set(.4*GetRotatorPower(state));
+	frc::SwerveModuleState optimizedstate = state.Optimize(state,(SwerveModule::GetCurrentAngle()*1_rad));
+
+	double turningVal = turningPIDController.Calculate(
+			SwerveModule::GetCurrentAngle(),optimizedstate.angle.Radians().value());
+	if (turningVal > 1.0) turningVal = 1.0;
+	else if (turningVal < -1.0) turningVal = -1.0;
+	
+	
+		DriveMotor.Set(0.4*optimizedstate.speed*(1.0/(MAX_SPEED*1_mps)));
+		RotatorMotor.Set(0.7*turningVal);
 	}
 	else{
-		DriveMotor.Set(0);
-		RotatorMotor.Set(0);
-		//return;//check this
+		DriveMotor.Set(0.0);
+		RotatorMotor.Set(0.0);
 	}
+}
+/*
+//Input to motor state
+void SwerveModule::SetToVector(frc::SwerveModuleState& referenceState){
+  // 1. Optimize reference state to avoid spinning further than 90 degrees
+  const auto state = frc::SwerveModuleState::Optimize(
+      referenceState, units::radian_t(GetCurrentAngle()));
+
+  // 2. Calculate drive output from the drive PID controller.
+  const auto driveOutput = drivePIDController.Calculate(
+     driveEncoder->GetVelocity(), state.speed.value());
+
+  // 3. Calculate the voltage needed to drive the moter to get the desired velocity
+  const auto driveFeedforward = drivingFeedforward.Calculate(state.speed);
+
+  // 4. Calculate turning motor output from the turning PID controller.
+  const auto turnOutput = turningPIDController.Calculate(
+      units::radian_t(GetCurrentAngle()), state.angle.Radians());
+  
+  // 5. Calculate the voltage needed to drive the moter to get the desired turn rate
+  const auto turnFeedforward = turningFeedforward.Calculate(
+      turningPIDController.GetSetpoint().velocity);
+
+  // 6. Set the motor outputs.
+  if ((units::volt_t{driveOutput} + driveFeedforward) > units::volt_t{(12.0*0.001)})
+  {
+  	DriveMotor.SetVoltage(units::volt_t{driveOutput} + driveFeedforward);
+  	RotatorMotor.SetVoltage(units::volt_t{turnOutput} + turnFeedforward);
+  }  
+  //stops automatic recentering
+  else{
+  	DriveMotor.SetVoltage(units::volt_t{0.0});
+	RotatorMotor.SetVoltage(units::volt_t{0.0});
+  }
 	
 }
+*/
