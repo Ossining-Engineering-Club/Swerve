@@ -27,3 +27,10 @@
 #define KRP 1.0
 #define KRI 0.0
 #define KRD 0.0
+//Drivetrain:
+// Define values for GetValue Switch Statement
+#define L_FRONT 0
+#define R_FRONT 1
+#define L_BACK 2
+#define R_BACK 3
+#define ABS_ANGLE 0
