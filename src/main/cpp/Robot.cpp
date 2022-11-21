@@ -10,6 +10,7 @@
 #include <frc/filter/SlewRateLimiter.h>
 #include <frc/smartdashboard/Field2d.h>
 #include <frc/kinematics/SwerveModuleState.h>
+#include <frc/smartdashboard/Field2d.h>
 
 class Robot : public frc::TimedRobot {
   private:
@@ -22,6 +23,7 @@ class Robot : public frc::TimedRobot {
   std::string m_autoSelected;
   frc::Field2d m_field;
   bool FieldOriented;
+  frc::Field2d field;
   //Limit joystick input to 1/3 of a secont from 0 to 1
   frc::SlewRateLimiter<units::scalar> xspeedLimiter{30/1_s};
   frc::SlewRateLimiter<units::scalar> yspeedLimiter{30/1_s};
@@ -73,12 +75,9 @@ void AutonomousPeriodic() {
     swerve.UpdateOdometry();
 
     //Dash should be updated 1 out of every 100 calls to not slow things down
-<<<<<<< Updated upstream
-=======
     // Here is an alteraitnve read if the current format fails
     //dash->PutNumber("ABSLFPos",swerve.GetValue(L_FRONT, ABS_ANGLE));
     /*
->>>>>>> Stashed changes
     dash->PutNumber("ABSLBPos",swerve.LFMod.GetAbsEncoderAngle());
     dash->PutNumber("ABSLBPos",swerve.LBMod.GetAbsEncoderAngle());
     dash->PutNumber("ABSRFPos",swerve.RFMod.GetAbsEncoderAngle());
