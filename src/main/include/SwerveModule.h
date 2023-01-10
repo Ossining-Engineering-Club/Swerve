@@ -28,6 +28,7 @@ class SwerveModule{
 	void ResetEncoder();
 	double GetCurrentAngle();
 	double GetAbsEncoderAngle();
+	frc::SwerveModulePosition GetPosition() const;
 	void SetToVector(frc::SwerveModuleState& state);
 
   private:

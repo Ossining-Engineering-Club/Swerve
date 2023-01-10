@@ -19,8 +19,8 @@ absEncoder(CANCoderId)
 	driveEncoder->SetVelocityConversionFactor(DriveEncoderVelocityFactor);
 	turningEncoder->SetVelocityConversionFactor(turnEncoderVelocityFactor);
     turningPIDController.EnableContinuousInput(
-      -1.0*wpi::numbers::pi, 
-	  wpi::numbers::pi);
+      -1.0*std::numbers::pi, 
+	  std::numbers::pi);
 	SwerveModule::ResetEncoder();
 }
 // Get State to be used for odometry
@@ -32,6 +32,10 @@ frc::SwerveModuleState SwerveModule::GetState() const
 //Get wheel angle from Motor encoder subtracting Offest seen on absolute encoder
 double SwerveModule::GetCurrentAngle(){
 	return turningEncoder->GetPosition()-turningEncoderOffset; 
+}
+frc::SwerveModulePosition SwerveModule::GetPosition() const {
+  return {units::meter_t{driveEncoder -> GetPosition()},
+          units::radian_t{turningEncoder -> GetPosition()}};
 }
 //Return the Absolute Encoder Angle between -Pi and +PI
 double SwerveModule::GetAbsEncoderAngle(){

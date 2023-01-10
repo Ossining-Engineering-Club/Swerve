@@ -4,7 +4,8 @@
 Drivetrain::Drivetrain(units::length::meter_t startingx, units::length::meter_t startingy, units::angle::radian_t  startingangle):
 
 //Initialize Odometry
-odometry(kinematics, Rotation2d(startingangle), Pose2d(startingx, startingy,startingangle))
+odometry(kinematics, Rotation2d(startingangle),{LFMod.GetPosition(), RFMod.GetPosition(),
+       LBMod.GetPosition(), RBMod.GetPosition()}, Pose2d(startingx, startingy,startingangle))
 {
     //Chassis objects
 
@@ -31,8 +32,8 @@ void Drivetrain::Drive(
   RBMod.SetToVector(br);
 }
 void Drivetrain::UpdateOdometry() { 
-    odometry.Update(gyro.GetRotation2d(), LFMod.GetState(),
-    RFMod.GetState(), LBMod.GetState(), RBMod.GetState());
+    odometry.Update(gyro.GetRotation2d(),{LFMod.GetPosition(), RFMod.GetPosition(),
+       LBMod.GetPosition(), RBMod.GetPosition()});
 }
 // Need to Update to a OdometryGetPose for doing Autonomous
 // Get Pose should just return Pose and should not update
