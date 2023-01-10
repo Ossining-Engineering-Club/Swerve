@@ -47,9 +47,9 @@ class Drivetrain{
         SwerveDriveKinematics<4> kinematics{ frontLeftLocation, 
             frontRightLocation, backLeftLocation, backRightLocation};
         //FIX ODOMETRY OBJECT
-       frc::SwerveDriveOdometry<4> odometry{kinematics, gyro.GetRotation2d(), {LFMod.GetPosition(), RFMod.GetPosition(),
-       LBMod.GetPosition(), RBMod.GetPosition()}};
        Pose2d robotPose;
+       frc::SwerveDriveOdometry<4> odometry{kinematics, gyro.GetRotation2d(), {LFMod.GetPosition(), RFMod.GetPosition(),
+       LBMod.GetPosition(), RBMod.GetPosition()}, robotPose};
        };
 
         
